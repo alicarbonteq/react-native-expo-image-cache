@@ -48,7 +48,7 @@ export default class CacheManager {
 
   static async clearCache(): Promise<void> {
     await FileSystem.deleteAsync(BASE_DIR, { idempotent: true });
-    await FileSystem.makeDirectoryAsync(BASE_DIR);
+    // await FileSystem.makeDirectoryAsync(BASE_DIR);
   }
 
   static async getCacheSize(): Promise<number> {
