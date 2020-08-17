@@ -26,7 +26,7 @@ interface ImageProps {
   transitionDuration?: number;
   tint?: "dark" | "light";
   onError: (error: { nativeEvent: { error: Error } }) => void;
-  bg: boolean;
+  bg?: boolean;
 }
 
 interface ImageState {
@@ -88,7 +88,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render() {
-    const { preview, style, defaultSource, tint, bg, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, bg = false, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
@@ -104,17 +104,18 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     ];
     return (
       <View {...{ style }}>
-        {!!defaultSource && !isImageReady &&
+        {!!defaultSource && !isImageReady && (
           !!bg ?
-          <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} />
-          :
-          <RNImage source={defaultSource} style={computedStyle} {...otherProps} />
-        }
-        {!!preview &&
+            <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} />
+            :
+            <RNImage source={defaultSource} style={computedStyle} {...otherProps} />
+        )}
+        {!!preview && (
           !!bg ?
-          <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
-          :
-          <RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
+            <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
+            :
+            <RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
+        )
         }
         {isImageReady &&
           !!bg ?
