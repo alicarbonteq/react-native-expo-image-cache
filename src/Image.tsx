@@ -88,7 +88,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render() {
-    const { preview, style, defaultSource, tint, bg = false, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, bg = false, children, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
@@ -107,7 +107,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         {!!defaultSource && !isImageReady && (
           !!bg ?
             <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} >
-              {this.props.children}
+              {children}
             </ImageBackground>
             :
             <RNImage source={defaultSource} style={computedStyle} {...otherProps} />
@@ -115,7 +115,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         {!!preview && (
           !!bg ?
             <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} >
-              {this.props.children}
+              {children}
             </ImageBackground>
             :
             <RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
@@ -124,7 +124,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         {isImageReady &&
           !!bg ?
           <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
-            {this.props.children}
+            {children}
           </ImageBackground>
           :
           <RNImage source={{ uri }} style={computedStyle} {...otherProps} />
