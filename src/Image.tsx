@@ -89,12 +89,12 @@ export default class Image extends React.Component<ImageProps, ImageState> {
 
   render() {
     const { preview, style, defaultSource, tint, bg = false, children, ...otherProps } = this.props;
-    const { uri, intensity } = this.state;
+    const { uri } = this.state;
     const isImageReady = !!uri;
-    const opacity = intensity.interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, 0.5]
-    });
+    // const opacity = intensity.interpolate({
+    //   inputRange: [0, 100],
+    //   outputRange: [0, 0.5]
+    // });
     const flattenedStyle = StyleSheet.flatten(style);
     const computedStyle: StyleProp<ImageStyle> = [
       StyleSheet.absoluteFill,
@@ -136,8 +136,8 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 }
 
-const black = "black";
-const white = "white";
+// const black = "black";
+// const white = "white";
 const propsToCopy = [
   "borderRadius",
   "borderBottomLeftRadius",
@@ -145,4 +145,4 @@ const propsToCopy = [
   "borderTopLeftRadius",
   "borderTopRightRadius"
 ];
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+// const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
