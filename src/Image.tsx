@@ -122,12 +122,12 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         )
         }
         {isImageReady &&
-          !!bg ?
-          <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
-            {children}
-          </ImageBackground>
-          :
-          <RNImage source={{ uri }} style={computedStyle} {...otherProps} />
+          (!!bg ?
+            <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
+              {children}
+            </ImageBackground>
+            :
+            <RNImage source={{ uri }} style={computedStyle} {...otherProps} />)
         }
         {/* {!!preview && Platform.OS === "ios" && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
         {!!preview && Platform.OS === "android" && <Animated.View style={[computedStyle, { opacity }]} />} */}
