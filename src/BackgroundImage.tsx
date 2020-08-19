@@ -2,7 +2,6 @@
 import * as _ from "lodash";
 import * as React from "react";
 import {
-  Image as RNImage,
   Animated,
   StyleSheet,
   View,
@@ -10,7 +9,8 @@ import {
   ImageStyle,
   ImageURISource,
   ImageSourcePropType,
-  StyleProp
+  StyleProp,
+  ImageBackground
 } from "react-native";
 
 import CacheManager, { DownloadOptions } from "./CacheManager";
@@ -97,10 +97,22 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     ];
     return (
       <View {...{ style }}>
-        {!!defaultSource && !isImageReady && (<RNImage source={defaultSource} style={computedStyle} {...otherProps} />)}
-        {!!preview && (<RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />)
+        {!!defaultSource && !isImageReady && (
+          <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} >
+            {children}
+          </ImageBackground>
+        )}
+        {!!preview && (
+          <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} >
+            {children}
+          </ImageBackground>
+        )
         }
-        {isImageReady && (<RNImage source={{ uri }} style={computedStyle} {...otherProps} />)}
+        {isImageReady &&
+          <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
+            {children}
+          </ImageBackground>
+        }
       </View>
     );
   }
