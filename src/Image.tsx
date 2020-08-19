@@ -10,8 +10,10 @@ import {
   ImageStyle,
   ImageURISource,
   ImageSourcePropType,
-  StyleProp
+  StyleProp,
+  ImageBackground
 } from "react-native";
+// import { BlurView } from "expo-blur";
 
 import CacheManager, { DownloadOptions } from "./CacheManager";
 
@@ -24,6 +26,7 @@ interface ImageProps {
   transitionDuration?: number;
   tint?: "dark" | "light";
   onError: (error: { nativeEvent: { error: Error } }) => void;
+  bg?: boolean;
 }
 
 interface ImageState {
@@ -85,9 +88,13 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render() {
-    const { preview, style, defaultSource, tint, children, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, bg = false, children, ...otherProps } = this.props;
     const { uri } = this.state;
     const isImageReady = !!uri;
+    // const opacity = intensity.interpolate({
+    //   inputRange: [0, 100],
+    //   outputRange: [0, 0.5]
+    // });
     const flattenedStyle = StyleSheet.flatten(style);
     const computedStyle: StyleProp<ImageStyle> = [
       StyleSheet.absoluteFill,
@@ -97,15 +104,40 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     ];
     return (
       <View {...{ style }}>
-        {!!defaultSource && !isImageReady && (<RNImage source={defaultSource} style={computedStyle} {...otherProps} />)}
-        {!!preview && (<RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />)
+        {!!defaultSource && !isImageReady && (
+          bg ?
+            <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} >
+              {children}
+            </ImageBackground>
+            :
+            <RNImage source={defaultSource} style={computedStyle} {...otherProps} />
+        )}
+        {!!preview && (
+          bg ?
+            <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} >
+              {children}
+            </ImageBackground>
+            :
+            <RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
+        )
         }
-        {isImageReady && (<RNImage source={{ uri }} style={computedStyle} {...otherProps} />)}
+        {isImageReady &&
+          (bg ?
+            <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
+              {children}
+            </ImageBackground>
+            :
+            <RNImage source={{ uri }} style={computedStyle} {...otherProps} />)
+        }
+        {/* {!!preview && Platform.OS === "ios" && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
+        {!!preview && Platform.OS === "android" && <Animated.View style={[computedStyle, { opacity }]} />} */}
       </View>
     );
   }
 }
 
+// const black = "black";
+// const white = "white";
 const propsToCopy = [
   "borderRadius",
   "borderBottomLeftRadius",
@@ -113,3 +145,4 @@ const propsToCopy = [
   "borderTopLeftRadius",
   "borderTopRightRadius"
 ];
+// const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
