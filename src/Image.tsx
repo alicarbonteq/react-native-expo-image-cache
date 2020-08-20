@@ -113,14 +113,10 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             <RNImage source={defaultSource} style={computedStyle} {...otherProps} />
         )}
         {!!preview && (
-          bg ?
-            <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} >
-              {children}
-            </ImageBackground>
-            :
-            <RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
-        )
-        }
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <RNImage source={preview} style={{ width: 30, height: 30 }} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
+          </View>
+        )}
         {isImageReady &&
           (bg ?
             <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
