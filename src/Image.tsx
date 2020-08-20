@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   Image as RNImage,
   Animated,
-  // StyleSheet,
+  StyleSheet,
   View,
   Platform,
   ImageStyle,
@@ -95,39 +95,39 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     //   inputRange: [0, 100],
     //   outputRange: [0, 0.5]
     // });
-    // const flattenedStyle = StyleSheet.flatten(style);
-    // const computedStyle: StyleProp<ImageStyle> = [
-    //   StyleSheet.absoluteFill,
-    //   _.transform(_.pickBy(flattenedStyle, (_val, key) => propsToCopy.indexOf(key) !== -1), (result, value: any, key) =>
-    //     Object.assign(result, { [key]: value - (flattenedStyle.borderWidth || 0) })
-    //   )
-    // ];
+    const flattenedStyle = StyleSheet.flatten(style);
+    const computedStyle: StyleProp<ImageStyle> = [
+      StyleSheet.absoluteFill,
+      _.transform(_.pickBy(flattenedStyle, (_val, key) => propsToCopy.indexOf(key) !== -1), (result, value: any, key) =>
+        Object.assign(result, { [key]: value - (flattenedStyle.borderWidth || 0) })
+      )
+    ];
     return (
       <View {...{ style }}>
         {!!defaultSource && !isImageReady && (
           bg ?
-            <ImageBackground source={defaultSource} style={style} {...otherProps} >
+            <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} >
               {children}
             </ImageBackground>
             :
-            <RNImage source={defaultSource} style={style} {...otherProps} />
+            <RNImage source={defaultSource} style={computedStyle} {...otherProps} />
         )}
         {!!preview && (
           bg ?
-            <ImageBackground source={preview} style={style} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} >
+            <ImageBackground source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} >
               {children}
             </ImageBackground>
             :
-            <RNImage source={preview} style={style} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
+            <RNImage source={preview} style={computedStyle} blurRadius={Platform.OS === "android" ? 0.5 : 0} {...otherProps} />
         )
         }
         {isImageReady &&
           (bg ?
-            <ImageBackground source={{ uri }} style={style} {...otherProps}>
+            <ImageBackground source={{ uri }} style={computedStyle} {...otherProps}>
               {children}
             </ImageBackground>
             :
-            <RNImage source={{ uri }} style={style} {...otherProps} />)
+            <RNImage source={{ uri }} style={computedStyle} {...otherProps} />)
         }
         {/* {!!preview && Platform.OS === "ios" && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
         {!!preview && Platform.OS === "android" && <Animated.View style={[computedStyle, { opacity }]} />} */}
@@ -138,11 +138,11 @@ export default class Image extends React.Component<ImageProps, ImageState> {
 
 // const black = "black";
 // const white = "white";
-// const propsToCopy = [
-//   "borderRadius",
-//   "borderBottomLeftRadius",
-//   "borderBottomRightRadius",
-//   "borderTopLeftRadius",
-//   "borderTopRightRadius"
-// ];
+const propsToCopy = [
+  "borderRadius",
+  "borderBottomLeftRadius",
+  "borderBottomRightRadius",
+  "borderTopLeftRadius",
+  "borderTopRightRadius"
+];
 // const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
