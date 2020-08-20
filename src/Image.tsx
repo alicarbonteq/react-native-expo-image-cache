@@ -103,7 +103,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
       )
     ];
     return (
-      <View>
+      <View {...{ style }}>
         {!!defaultSource && !isImageReady && (
           bg ?
             <ImageBackground source={defaultSource} style={computedStyle} {...otherProps} >
