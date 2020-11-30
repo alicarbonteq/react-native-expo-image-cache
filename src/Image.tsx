@@ -27,6 +27,7 @@ interface ImageProps {
   tint?: "dark" | "light";
   onError: (error: { nativeEvent: { error: Error } }) => void;
   bg?: boolean;
+  onImageLoad: Function;
 }
 
 interface ImageState {
@@ -76,7 +77,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
         const path = await CacheManager.get(uri, options).getPath();
         if (this.mounted) {
           if (path) {
-            this.setState({ uri: path });
+            this.setState({ uri: path }, () => this.props.onImageLoad && this.props.onImageLoad());
           } else {
             onError({ nativeEvent: { error: new Error("Could not load image") } });
           }
